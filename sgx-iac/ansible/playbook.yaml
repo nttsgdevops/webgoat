@@ -1,0 +1,36 @@
+---
+
+- hosts: app_servers
+  sudo: yes
+  tasks: 
+  - name: Install Docker
+    yum: name=docker state=latest
+  - name: Install Python-pip
+    yum: name=python-pip state=latest
+  - name: install docker-py
+    command: pip install docker-py
+
+  - name: start docker service
+    service: name=docker state=started
+
+  - name: Enable the docker registry
+    copy:
+      dest: "/etc/docker/daemon.json"
+      content: '{ "insecure-registries" : ["a16a9c289110011ea901f02bc901c871-1287123495.ap-southeast-1.elb.amazonaws.com:5000"] }'
+  - name: restart docker service
+    service: name=docker state=restarted
+  - name: Login to the docker registry 
+    docker_login:
+      registry: a16a9c289110011ea901f02bc901c871-1287123495.ap-southeast-1.elb.amazonaws.com:5000
+      username: admin
+      password: P@ssw0rd
+      
+  - name: Pull app image
+    command: docker pull  a16a9c289110011ea901f02bc901c871-1287123495.ap-southeast-1.elb.amazonaws.com:5000/projecta:latest
+  
+  - name: Run docker container
+    docker_container: 
+      name: webgoat
+      image: a16a9c289110011ea901f02bc901c871-1287123495.ap-southeast-1.elb.amazonaws.com:5000/projecta:latest
+      ports:
+        - "80:8080"
