@@ -4,5 +4,5 @@ resource "aws_route53_record" "webgoat" {
   name    = "webgoat.nttdemo.net"
   type    = "A"
   ttl     = "300"
-  records = ["aws_instance.web.public_ip"]
+  records = ["${aws_instance.web.public_ip}"]
 }
