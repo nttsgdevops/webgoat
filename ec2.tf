@@ -54,6 +54,8 @@ resource "aws_instance" "web" {
   vpc_security_group_ids  = ["${aws_security_group.app-sg.id}"]
   tags = {
     Name = "HelloWorld"
+    ttl = "20"
+    owner = "devops"
   }
   
 }
