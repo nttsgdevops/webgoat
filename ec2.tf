@@ -48,10 +48,10 @@ resource "aws_security_group" "app-sg" {
 
 
 resource "aws_instance" "web" {
-  ami           = "${data.aws_ami.amazon-linux-2.id}"
+  ami           = "data.aws_ami.amazon-linux-2.id"
   instance_type = "t2.micro"
   key_name      = "devops-eks-wn"
-  vpc_security_group_ids  = ["${aws_security_group.app-sg.id}"]
+  vpc_security_group_ids  = ["aws_security_group.app-sg.id"]
   tags = {
     Name = "HelloWorld"
     ttl = "20"
