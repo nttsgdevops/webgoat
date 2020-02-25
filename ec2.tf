@@ -53,7 +53,9 @@ resource "aws_instance" "web" {
   key_name      = "devops-eks-wn"
   vpc_security_group_ids  = ["${aws_security_group.app-sg.id}"]
   tags = {
-    Name = "HelloWorld"
+    Name = "devsecops"
+    ttl  = "20"
+    owner = "nikit"
   }
   
 }
